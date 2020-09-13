@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +18,9 @@ import com.sample.android.lib.R;
 import com.sample.android.lib.model.MediaMeta;
 import com.sample.android.lib.model.loader.Loader;
 import com.sample.android.lib.model.loader.PictureLoader;
-import com.sample.android.lib.model.loader.VideoLoader;
 import com.sample.android.lib.preview.PreviewActivity;
+import com.sample.android.lib.selection.SelectionCollection;
+import com.sample.android.lib.selection.SelectionConfirmView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +34,51 @@ public class PhotoListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     PhotoListAdapter adapter;
 
-    ExecutorService executorService;
+    SelectionConfirmView selectionConfirmView;
 
+    ExecutorService executorService;
     Loader albumLoader;
+
+    SelectionCollection selectionCollection = new SelectionCollection();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_list_layout);
 
-        adapter = new PhotoListAdapter();
-        adapter.setOnItemClickListener(mediaMeta -> {
-            PreviewActivity.startActivity(this, mediaMeta);
+        adapter = new PhotoListAdapter(selectionCollection);
+        adapter.setOnItemClickListener(new PhotoListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MediaMeta mediaMeta) {
+                PreviewActivity.startActivity(PhotoListActivity.this, mediaMeta);
+            }
+
+            @Override
+            public void onItemSelection(boolean isChecked, MediaMeta mediaMeta) {
+
+                //更新选中效果
+                if (selectionConfirmView != null) {
+
+                    if (selectionCollection.isEmpty()) {
+                        selectionConfirmView.setVisibility(View.GONE);
+                    } else {
+                        selectionConfirmView.setVisibility(View.VISIBLE);
+                    }
+
+
+                    if (selectionConfirmView.getVisibility() != View.VISIBLE) {
+                        return;
+                    }
+                    selectionConfirmView.update(selectionCollection.asListOfUri());
+                }
+            }
         });
         recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(adapter);
+
+
+        selectionConfirmView = findViewById(R.id.selection);
 
         executorService = Executors.newSingleThreadExecutor();
         albumLoader = new PictureLoader();

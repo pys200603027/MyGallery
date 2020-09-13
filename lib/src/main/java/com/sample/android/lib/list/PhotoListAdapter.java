@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.sample.android.lib.R;
 import com.sample.android.lib.model.MediaMeta;
+import com.sample.android.lib.selection.SelectionCollection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,12 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
 
     private OnItemClickListener onItemClickListener;
     private List data;
+
+    private SelectionCollection selectionCollection;
+
+    public PhotoListAdapter(SelectionCollection selectionCollection) {
+        this.selectionCollection = selectionCollection;
+    }
 
     public void setNewData(List newData) {
         if (data == null) {
@@ -48,9 +55,28 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             MediaMeta mediaMeta = (MediaMeta) obj;
             Glide.with(holder.imageView.getContext()).load(mediaMeta.getUri()).into(holder.imageView);
 
+            if (selectionCollection.isSelected(mediaMeta)) {
+                holder.checkBox.setChecked(true);
+            } else {
+                holder.checkBox.setChecked(false);
+            }
+
+
             holder.imageView.setOnClickListener(v -> {
                 if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(mediaMeta);
+                }
+            });
+
+            holder.checkBox.setOnClickListener(v -> {
+                boolean isChecked = holder.checkBox.isChecked();
+                if (isChecked) {
+                    selectionCollection.add(mediaMeta);
+                } else {
+                    selectionCollection.remove(mediaMeta);
+                }
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemSelection(isChecked, mediaMeta);
                 }
             });
         }
@@ -77,5 +103,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
 
     public interface OnItemClickListener {
         void onItemClick(MediaMeta mediaMeta);
+
+        void onItemSelection(boolean isChecked, MediaMeta mediaMeta);
     }
 }

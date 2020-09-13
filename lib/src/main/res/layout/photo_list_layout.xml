@@ -8,4 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.sample.android.lib.selection.SelectionConfirmView
+        android:id="@+id/selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#3b3b3d" />
+
 </RelativeLayout>
