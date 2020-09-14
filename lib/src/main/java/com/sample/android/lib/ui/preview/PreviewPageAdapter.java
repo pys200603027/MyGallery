@@ -1,4 +1,4 @@
-package com.sample.android.lib.preview;
+package com.sample.android.lib.ui.preview;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +16,7 @@ public class PreviewPageAdapter extends FragmentPagerAdapter {
 
     public PreviewPageAdapter(@NonNull FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        this.data = new ArrayList();
     }
 
     @NonNull
@@ -30,11 +31,14 @@ public class PreviewPageAdapter extends FragmentPagerAdapter {
     }
 
     public void addNewData(List newData) {
-        if (this.data == null) {
-            this.data = new ArrayList();
-        }
         data.clear();
         data.addAll(newData);
         notifyDataSetChanged();
     }
+
+    public MediaMeta getMediaMeta(int position) {
+        return data.get(position);
+    }
+
+
 }

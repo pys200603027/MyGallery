@@ -90,12 +90,10 @@ public class MediaMeta implements Parcelable {
         if (this == obj) {
             return true;
         }
-
         if (obj instanceof MediaMeta) {
             MediaMeta mediaMeta = (MediaMeta) obj;
             return mediaMeta.uri.equals(this.uri);
         }
-
         return false;
     }
 }

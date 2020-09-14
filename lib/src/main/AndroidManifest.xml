@@ -7,8 +7,8 @@
 
     <application>
 
-        <activity android:name=".list.PhotoListActivity" />
-        <activity android:name=".preview.PreviewActivity" />
+        <activity android:name=".ui.list.PhotoListActivity" />
+        <activity android:name=".ui.preview.PreviewActivity" />
     </application>
 
 </manifest>

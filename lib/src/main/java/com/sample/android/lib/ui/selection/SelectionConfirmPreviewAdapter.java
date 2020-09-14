@@ -1,4 +1,4 @@
-package com.sample.android.lib.selection;
+package com.sample.android.lib.ui.selection;
 
 import android.content.Context;
 import android.net.Uri;

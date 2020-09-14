@@ -1,5 +1,6 @@
-package com.sample.android.lib.list;
+package com.sample.android.lib.ui.list;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.sample.android.lib.R;
 import com.sample.android.lib.model.MediaMeta;
-import com.sample.android.lib.selection.SelectionCollection;
+import com.sample.android.lib.ui.selection.SelectionCollection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.ViewHolder> {
 
     private OnItemClickListener onItemClickListener;
-    private List data;
+    private List<? extends MediaMeta> data;
 
     private SelectionCollection selectionCollection;
 
@@ -37,6 +38,16 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
         notifyDataSetChanged();
     }
 
+    public void notifyItemChange(MediaMeta mediaMeta) {
+        boolean contains = data.contains(mediaMeta);
+        int i = data.indexOf(mediaMeta);
+        Log.w("123", "notifyItemChange position:" + i + ",contains:" + contains);
+        if (i < 0 || i >= data.size()) {
+            return;
+        }
+        notifyItemChanged(i);
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -50,9 +61,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull PhotoListAdapter.ViewHolder holder, int position) {
-        Object obj = data.get(position);
-        if (obj instanceof MediaMeta) {
-            MediaMeta mediaMeta = (MediaMeta) obj;
+        MediaMeta mediaMeta = data.get(position);
+        if (mediaMeta != null) {
             Glide.with(holder.imageView.getContext()).load(mediaMeta.getUri()).into(holder.imageView);
 
             if (selectionCollection.isSelected(mediaMeta)) {

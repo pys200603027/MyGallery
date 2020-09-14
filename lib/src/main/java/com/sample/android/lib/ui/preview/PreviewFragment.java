@@ -1,4 +1,4 @@
-package com.sample.android.lib.preview;
+package com.sample.android.lib.ui.preview;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

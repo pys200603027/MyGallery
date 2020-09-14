@@ -4,9 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.sample.android.lib.list.PhotoListActivity;
+import com.sample.android.lib.ui.list.PhotoListActivity;
 
 public class MainActivity extends AppCompatActivity {
 

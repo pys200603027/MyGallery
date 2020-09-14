@@ -1,4 +1,4 @@
-package com.sample.android.lib.preview;
+package com.sample.android.lib.ui.preview;
 
 import android.content.Context;
 import android.util.AttributeSet;

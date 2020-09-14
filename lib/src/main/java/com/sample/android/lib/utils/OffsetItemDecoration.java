@@ -1,4 +1,4 @@
-package com.sample.android.lib.selection;
+package com.sample.android.lib.utils;
 
 import android.content.Context;
 import android.graphics.Rect;
